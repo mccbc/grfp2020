@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+\title{\vspace{-1.5in}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\thispagestyle{empty}
+\centerline{\underline{\textbf{Graduate Research Plan Statement}}}
+
+\noindent
+\\ A central problem in the study of exoplanet atmospheres is how to treat radiation in optically thick environments, where light is scattered much more readily than it is transmitted. This project will find and test analytic solutions of the radiative transfer equation for resonant scattering of Lyman-alpha (Ly$\alpha$) photons by dense gases. I propose a detailed comparison of analytic solutions to the transfer equation with Monte Carlo simulations using the supercomputer Pleiades (NASA). The results will be used to create a scheme to accelerate the Monte Carlo transfer in regions of high optical depth. The impact of this project is that it will allow rapid hydrodynamic calculations of irradiated exoplanet atmospheres.
+
+\noindent \textbf{\underline{Intellectual Merit}} 
+
+Observations by \textit{Hubble Space Telescope} have found deep Ly$\alpha$ transits by the exoplanets HD 209458b (Vidal-Madjar et al. 2003), HD 189733b (Lecavelier et al. 2012), and  GJ 436b (Ehrenreich et al. 2015), indicating the presence of large exospheric clouds produced by escaping hydrogen atoms. Modeling the interplay between radiation and hydrodynamics in these atmospheric outflows is a difficult problem, as Monte Carlo simulations are inherently time-consuming and computationally expensive. In the much simpler problem of light from a central point-source escaping a sphere of uniform density, the mean number of scatterings for a single photon can reach $10^{7}$ or higher for large optical depths, requiring a significant time investment to calculate numerically. \textbf{This is why I have solved for the photon escape time distribution directly, saving hundreds of CPU-hours. This analytic distribution is sampled to calculate the mean intensity and flux at a fraction of the computational cost of traditional numerical methods.} I will compare these new analytic solutions for photon escape time distributions to Monte Carlo simulations in order to establish their relative validity in the limit of large Ly$\alpha$ line-center optical depth. Once the solution is confirmed to match the experimental results, this method will be applied to grid cells in a radiation-hydrodynamic simulation for comparison with Athena++ (Stone et al. 2019), a leading radiation magnetohydrodynamics (Rad-MHD) code. By obtaining the radiation pressure on each cell face, hydrodynamic forces can be calculated in each cell without the need to simulate comings and goings of individual photons.
+
+\textbf{Preliminary Research:} I wrote a Monte Carlo radiative transfer code in \texttt{FORTRAN} that tabulates escape times and angles of photons escaping from a sphere of uniform density. From these quantities, the outgoing flux and mean intensity at the surface of the sphere are easily calculated. Separately, I wrote an analytic solver in Python that outputs the flux and mean intensity at all points within the sphere based on the radiative transfer solution. The solver operates in three main stages. First, I expand the spatial dependence of the transfer equation in terms of spherical Bessel functions, and separate the time dependence as a Fourier series. I use a set number of spatial eigenmodes $n$, photon frequencies $\sigma$, and oscillation frequencies $\omega$ to calculate Fourier coefficients $J(n, \sigma, \omega)$. Then, these Fourier coefficients are used to calculate the mean intensity $J$ and flux $H$ as a function of radius $r$, photon frequency $\sigma$, and time $t$. Finally, the flux at the surface of the sphere is evaluated to find the probability distribution of photon escape times.
+
+Developing this solver was a key step in that it allows for direct comparison between the analytic solutions and the Monte Carlo radiation transfer results. The next steps include \textbf{widening the Monte Carlo parameter space} over a range of optical depths and source frequencies, \textbf{calculating analytic solutions} for a larger number of spatial eigenmodes and frequencies, and \textbf{fitting} the resultant escape time distributions. These aims will quantify how well our analytic approach matches the equivalent numerical techniques, and their successful completion will form the basis for chapter 1 of my PhD thesis as a part of a broader effort to explore advanced numerical techniques in radiative transfer astrophysics.
+
+\noindent \textbf{Aim 1 - Widening the Monte Carlo parameter space}. The Monte Carlo code has successfully produced a distribution of outgoing photons which started at line center ($\sigma_{lc}$). I seek to characterize the dependence of this distribution on optical depth ($\tau$) and source frequency ($\sigma_s$), to which the analytic solution will be matched. Photons emitted away from line center should be scattered infrequently, due to the lower optical depth in the Ly$\alpha$ line wing. As such, it is expected that the outgoing spectrum will approach a delta function for sources with $|\sigma_{s} - \sigma_{lc}| \gg 0$.
+
+\noindent \textbf{Aim 2 - Calculating analytic solutions}. The code that makes up the analytic solver must turn continuous, infinite integrals into discrete, definite sums, using some $\Delta \omega$ within $0 < \omega < \omega_{\mathrm{max}}$ rather than the infinitesimal $d\omega$. I will compute these solutions for a variety of differential widths and maxima, to determine where (and how) the result converges. At this point, I will confirm that the solver accurately represents the analytic solution. 
+
+\noindent \textbf{Aim 3 - Fitting the distribution}. To use the escape time distribution as a Monte Carlo accelerant, it must show a correctly-shaped rise and exponential falloff. Futhermore, its dependence on the optical depth $\tau$, source frequency $\sigma_0$, light-crossing timescale, and Ly$\alpha$ line parameters must match the Monte Carlo. I will isolate groups of photons from the Monte Carlo based on their escape frequencies, and compare the escape time distributions of these sub-populations against the analytic distributions obtained by integrating flux over a matching range of frequencies.
+
+\thispagestyle{empty}
+
+\noindent \textbf{\underline{Broader Impacts}} 
+
+As a Graduate Student Researcher and Head TA of the University of Virginia Department of Astronomy, I aim to facilitate the accessibility of astronomy to younger audiences. However, in my own education in theoretical astrophysics, I found that the work lacked support for visual learners. I will solve this problem by using the game development platform Unity to create an interactive Virtual Reality (VR) experience that will connect my research to the public. This VR software, made free and accessible online, will be used as an education tool at three primary levels.
+
+\noindent
+\begin{enumerate}[wide, itemsep=-0.15cm, topsep=0cm, labelindent=0cm]
+    \item \textbf{Elementary school level.} At the annual Star Party event hosted by ``Dark Skies, Bright Kids" (DSBK), an organization at UVa dedicated to bringing astronomy outreach to under-represented groups, I will host a VR demonstration table introducing participants to the basic concept of radiation transfer, which is the foundation of my research. Two participants, acting as photons of different wavelengths, will race within the game to see who can escape from the center of the Sun first.
+    \item \textbf{High school level.} I have been mentoring a student on an Astronomy project for the past semester, and have noticed that students at this level often see Astronomy as exciting but out of reach. In a series of outreach talks at 5 local high schools, I will introduce this VR environment as a tool to be used by educators to reduce complex topics in science to be accessible, memorable experiences like playing a video game, and provide them with references to other open source tools with the same goal. The high-school level of the VR experience also includes a lesson centered around the game \textit{Universe Sandbox 2}, where I will introduce the students to the central concepts in exoplanet atmosphere research by demonstrating what happens when you place a planet too close to a star.
+    \item \textbf{College and Graduate level}. Students in these groups often struggle to present their work to the public in a meaningful way. I will host a series of 3 programming workshops for undergraduates and beginning graduate students, focused on applied data visualization. The first will be centered around basic design principles that can be used in all plots and figures, while the following two will explore applied programming solutions for interactive data visualization, such as the VR experience I have outlined above.
+\end{enumerate}
+
+At each level, anonymous survey links will be provided to evaluate the experience, aiming to isolate common barriers to accessibility at each level and quantifying how successfully this program removes them. The DSBK event will provide insight to the experiences of under-represented groups. Additionally, follow-up discussion sessions will be hosted for college and graduate students after the last programming workshop, where they will be asked to rate the difficulty of implementing these methods into their own outreach efforts and to identify potential areas of improvement.
+
+\vspace{0.45cm}
+\begin{adjustbox}{}
+\begin{tabular}{p{0.5\textwidth}l}
+    \textbf{References} \\
+     Vidal-Madjar et al. 2003, ApJ, 422, 143 &
+     Lecavelier et al. 2012, ApJ, 543, L4 \\
+     Ehrenreich et al. 2015, ApJ, 522, 459 &
+     McClellan et al. 2020, ApJ, \textit{in prep}\\
+    Stone et al. 2019, ascl:1912.005
+\end{tabular}
+\end{adjustbox}
+
+%\renewcommand\refname{\vskip -1cm}
+%\bibliographystyle{ieeetr}
+%\bibliography{ref}
+
+\end{document}
